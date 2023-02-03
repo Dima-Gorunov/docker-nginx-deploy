@@ -8,17 +8,17 @@ class ListController {
         try {
             const {text, userId} = req.body
             if (!text || !userId) {
-                return res.status(401).json({result_code: 1, message: "request error (paste text, userId)"})
+                return res.status(400).json({result_code: 1, message: "request error (paste text, userId)"})
             }
             const obj = await List.findOne({where: {text, userId}})
             if (obj) {
-                return res.status(401).json({result_code: 1, message: "list exist"})
+                return res.status(400).json({result_code: 1, message: "list exist"})
             }
             const list = await List.create({text, userId})
 
             return res.json(list)
         } catch (e) {
-            return res.status(401).json({result_code: 1, message: "ERROR"})
+            return res.status(400).json({result_code: 1, message: "ERROR"})
         }
     }
 
@@ -34,7 +34,7 @@ class ListController {
         const user = req.user
         const list = await List.findOne({where: {id: id, userId: user.id}})
         if (!list) {
-            return res.status(401).json({result_code: 1, message: "list not found"})
+            return res.status(400).json({result_code: 1, message: "list not found"})
         }
         await List.destroy({where: {id: id}})
         return res.json(list)

@@ -8,6 +8,7 @@ const User = sequelize.define('user', {
     password: {type: DataTypes.STRING},
     username: {type: DataTypes.STRING},
     role: {type: DataTypes.STRING, defaultValue: "USER"},
+    activated: {type: DataTypes.BOOLEAN, defaultValue: false} // добавил после сборки, далее в postgres добавлю поле
 })
 
 const List = sequelize.define('list', {

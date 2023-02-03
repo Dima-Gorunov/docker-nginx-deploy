@@ -24,12 +24,18 @@ class UserController {
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
         const user = await User.create({email, password: hashPassword})
+        //
+        // тут будет отправка ссылки на почту и логика проверки
+        //
         const token = generateJwt(user); //первая генерация токена при регистрации
         return res.json({token: token})
     }
 
     async login(req, res) {    // функция авторизации
         const {email, password} = req.body
+        if (!email || !password) {
+            return res.status(400).json({result_code: 1, message: "insufficient data"})
+        }
         const user = await User.findOne({where: {email}})
         if (!user) {
             return res.status(400).json({result_code: 1, message: "incorrect email"})

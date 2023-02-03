@@ -35,10 +35,13 @@ export const DefaultApi = {
     },
     getList(userId) {
         console.log(` id on axios: ${userId}`);
-        return instance.get(`api/list?userId=${userId}`)
+        return authInstance.get(`api/list?userId=${userId}`)
     },
     addList(text, userId) {
-        return instance.post('api/list', {text: text, userId: userId}).then(response => response.data)
+        return authInstance.post('api/list', {text: text, userId: userId}).then(response => response.data)
+    },
+    deleteList(id) {
+        return authInstance.delete('api/list', {data: {id}})
     }
 }
 

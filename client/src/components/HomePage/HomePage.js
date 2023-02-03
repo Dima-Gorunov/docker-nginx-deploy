@@ -6,12 +6,13 @@ import {LOGIN_ROUTE} from "../../Utils/const";
 const HomePage = (props) => {
     const setAuthLocal = () => {
         props.setAuth(false)
+        localStorage.setItem('token', "")
     }
     return (
         <div>
             <div className="btn-group btn-group-lg" role="group" aria-label="Basic example">
                 <Link to="/" type="button"
-                      className="btn btn-secondary">-home-</Link>
+                      className="btn btn-secondary">-home-+</Link>
                 {props.User.isAuth ? <div>
                     <Link to={`/user/${props.User.id}`} type="button"
                           className="btn btn-secondary">Мой профиль</Link>
