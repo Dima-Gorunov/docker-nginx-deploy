@@ -7,13 +7,15 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=dima
-      - POSTGRES_PASSWORD=2001ah2002
-      - POSTGRES_DB=update_database
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpass
+      - POSTGRES_DB=my_database
     volumes:
       - ./database_data:/var/lib/postgresql/data
   client-nginx:
-    build: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     ports:
       - "80:80"
     volumes: # This is where the magic happens!
@@ -21,20 +23,19 @@ services:
 #      - /usr/src/client/node_modules/
 #      - ./build:/usr/src/client/build
   server:
-    build: backend
+    depends_on:
+      - postgres_db
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     restart: always
     command: npm start
     environment:
       - EXTERNAL_PORT=5000
-      - PGDATABASE=update_database
-      - PGUSER=dima
-      - PGPASSWORD=2001ah2002
+      - PGDATABASE=my_database
+      - PGUSER=pguser
+      - PGPASSWORD=pgpass
       - PGHOST=postgres_db
-      - SECRET_KEY=2001ah2002
-    depends_on:
-      - postgres_db
-    volumes: # This is where the magic happens!
-      - ./backend:/usr/src/backend
-      - /usr/src/backend/node_modules/
+      - SECRET_KEY=somestring
